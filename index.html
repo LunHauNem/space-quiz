@@ -548,6 +548,15 @@
         : "Next question <span aria-hidden=\"true\">→</span>";
     }
 
+    document.addEventListener("keydown", event => {
+      if (answered || event.ctrlKey || event.metaKey || event.altKey) return;
+      if (event.target instanceof HTMLElement && event.target.isContentEditable) return;
+      if (event.target instanceof HTMLElement && event.target.closest("input, textarea, select")) return;
+
+      const selected = letters.indexOf(event.key.toUpperCase());
+      if (selected !== -1) selectAnswer(selected);
+    });
+
     function showResults() {
       const percent = score / questions.length;
       const result = percent === 1
